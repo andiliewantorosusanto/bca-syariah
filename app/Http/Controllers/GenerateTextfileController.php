@@ -2,84 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\GenerateTextfile;
 use Illuminate\Http\Request;
 
 class GenerateTextfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    protected $service;
+
+    public function __construct(GenerateTextfileService $service)
     {
-        //
+        $this->service = $service;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $response = $this->service->pagination($request);
+        return $this->response($response, 'List Generate Textfile successfully retrieved', 'Generate Textfile retrieved');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function detail($id)
     {
-        //
+        $response = $this->service->getById($id);
+        return $this->response($response, 'Generate Textfile Detail successfully retrieved', 'Generate Textfile retrieved');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\GenerateTextfile  $generateTextfile
-     * @return \Illuminate\Http\Response
-     */
-    public function show(GenerateTextfile $generateTextfile)
+    public function update($id, UpdateRequest $request)
     {
-        //
+        $response = $this->service->update($id, $request);
+        return $this->response($response, 'Generate Textfile successfully updated', 'Generate Textfile updated');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\GenerateTextfile  $generateTextfile
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(GenerateTextfile $generateTextfile)
+    public function create(CreateRequest $request)
     {
-        //
+        $response = $this->service->create($request);
+        return $this->response($response, 'Generate Textfile successfully created', 'Generate Textfile created');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\GenerateTextfile  $generateTextfile
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, GenerateTextfile $generateTextfile)
+    public function delete($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\GenerateTextfile  $generateTextfile
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(GenerateTextfile $generateTextfile)
-    {
-        //
+        $response = $this->service->delete($id);
+        return $this->response($response, 'Generate Textfile successfully deleted', 'Generate Textfile deleted');
     }
 }

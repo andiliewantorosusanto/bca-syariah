@@ -2,84 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    use responseTrait;
+
+    protected $service;
+
+    public function __construct(GroupService $service)
     {
-        //
+        $this->service = $service;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $response = $this->service->pagination($request);
+        return $this->response($response, 'List Group successfully retrieved', 'Group retrieved');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function detail($id)
     {
-        //
+        $response = $this->service->getById($id);
+        return $this->response($response, 'Group Detail successfully retrieved', 'Group retrieved');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Group $group)
+    public function update($id, UpdateRequest $request)
     {
-        //
+        $response = $this->service->update($id, $request);
+        return $this->response($response, 'Group successfully updated', 'Group updated');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Group $group)
+    public function create(CreateRequest $request)
     {
-        //
+        $response = $this->service->create($request);
+        return $this->response($response, 'Group successfully created', 'Group created');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Group $group)
+    public function delete($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Group $group)
-    {
-        //
+        $response = $this->service->delete($id);
+        return $this->response($response, 'Group successfully deleted', 'Group deleted');
     }
 }

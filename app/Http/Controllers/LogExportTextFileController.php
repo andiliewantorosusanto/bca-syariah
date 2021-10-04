@@ -5,81 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\LogExportTextFile;
 use Illuminate\Http\Request;
 
-class LogExportTextFileController extends Controller
+class LogExportTextfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    use responseTrait;
+
+    protected $service;
+    
+    public function __construct(LogExportTextfileService $service)
     {
-        //
+        $this->service = $service;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $response = $this->service->pagination($request);
+        return $this->response($response, 'List Generate Textfile successfully retrieved', 'Generate Textfile retrieved');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function detail($id)
     {
-        //
+        $response = $this->service->getById($id);
+        return $this->response($response, 'Generate Textfile Detail successfully retrieved', 'Generate Textfile retrieved');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\LogExportTextFile  $logExportTextFile
-     * @return \Illuminate\Http\Response
-     */
-    public function show(LogExportTextFile $logExportTextFile)
+    public function update($id, UpdateRequest $request)
     {
-        //
+        $response = $this->service->update($id, $request);
+        return $this->response($response, 'Generate Textfile successfully updated', 'Generate Textfile updated');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\LogExportTextFile  $logExportTextFile
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(LogExportTextFile $logExportTextFile)
+    public function create(CreateRequest $request)
     {
-        //
+        $response = $this->service->create($request);
+        return $this->response($response, 'Generate Textfile successfully created', 'Generate Textfile created');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LogExportTextFile  $logExportTextFile
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, LogExportTextFile $logExportTextFile)
+    public function delete($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\LogExportTextFile  $logExportTextFile
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(LogExportTextFile $logExportTextFile)
-    {
-        //
+        $response = $this->service->delete($id);
+        return $this->response($response, 'Generate Textfile successfully deleted', 'Generate Textfile deleted');
     }
 }

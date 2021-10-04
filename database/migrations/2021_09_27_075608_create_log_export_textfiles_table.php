@@ -13,7 +13,7 @@ class CreateLogExportTextFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('log_export_text_files', function (Blueprint $table) {
+        Schema::create('log_export_textfiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('created_by');
             $table->foreign('created_by')->references('id')->on('users');

@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    use responseTrait;
+
+    protected $service;
+
+    public function __construct(UserService $service)
+    {
+        $this->service = $service;
+    }
+
     public function register(Request $request) {
         $fields = $request->validate([
             'name' => 'required|string',
@@ -29,5 +39,9 @@ class AuthController extends Controller
         ];
 
         return response($response,201);
+    }
+
+    public function login(LoginRequest $request) {
+        $response =
     }
 }

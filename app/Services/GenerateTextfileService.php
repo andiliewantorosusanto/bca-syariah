@@ -4,16 +4,16 @@
 namespace App\Services;
 
 
-use App\Repositories\PolyClinicRepository;
+use App\Repositories\GenerateTextfileRepository;
 use App\Traits\paginatorTrait;
 
-class PolyClinicService
+class GenerateTextfileService
 {
     use paginatorTrait;
 
     protected $repository;
 
-    public function __construct(PolyClinicRepository $repository)
+    public function __construct(GenerateTextfileRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -50,13 +50,5 @@ class PolyClinicService
     {
         $model = $this->repository->getById($id);
         return $this->repository->destroy($model);
-    }
-
-    public function toggle($id)
-    {
-        $clinic = $this->repository->getById($id);
-        if ( $clinic->status === 'active')
-            return $this->repository->update($id, ['status' => 'not_active']);
-        return $this->repository->update($id, ['status' => 'active']);
     }
 }

@@ -4,16 +4,16 @@
 namespace App\Repositories;
 
 
-use App\Models\DokterSiaga;
+use App\Models\Group;
 use App\Traits\baseRepositoryTrait;
 
-class DokterSiagaRepository
+class GroupRepository
 {
     use baseRepositoryTrait;
 
     protected $model;
 
-    public function __construct(DokterSiaga $model)
+    public function __construct(Group $model)
     {
         $this->model = $model;
     }
@@ -26,10 +26,5 @@ class DokterSiagaRepository
     public function pagination($query, $limit)
     {
         return $query->paginate($limit);
-    }
-
-    public function filterName($query, $name)
-    {
-        return $query->where('name', 'like' ,'%'.$name.'%');
     }
 }

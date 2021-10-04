@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\LogExportTextFile;
+use App\Models\LogExportTextfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LogExportTextFileFactory extends Factory
+class LogExportTextfileFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = LogExportTextFile::class;
+    protected $model = LogExportTextfile::class;
 
     /**
      * Define the model's default state.
