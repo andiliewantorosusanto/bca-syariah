@@ -18,30 +18,30 @@ class GroupController extends Controller
     public function index(Request $request)
     {
         $response = $this->service->pagination($request);
-        return $this->response($response, 'List Group successfully retrieved', 'Group retrieved');
+        return $this->response($response);
     }
 
     public function detail($id)
     {
         $response = $this->service->getById($id);
-        return $this->response($response, 'Group Detail successfully retrieved', 'Group retrieved');
+        return $this->response($response);
     }
 
     public function update($id, UpdateRequest $request)
     {
         $response = $this->service->update($id, $request);
-        return $this->response($response, 'Group successfully updated', 'Group updated');
+        return $this->response($response);
     }
 
     public function create(CreateRequest $request)
     {
         $response = $this->service->create($request);
-        return $this->response($response, 'Group successfully created', 'Group created');
+        return $this->response($response);
     }
 
     public function delete($id)
     {
         $response = $this->service->delete($id);
-        return $this->response($response, 'Group successfully deleted', 'Group deleted');
+        return $this->response($response);
     }
 }

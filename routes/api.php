@@ -16,17 +16,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/auth/register',[AuthController::class,'register']);
+
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
 
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('/register',[AuthController::class,'register']);
+    Route::post('/login',[AuthController::class,'login']);
+    Route::post('/logout',[AuthController::class,'logout']);
+});
 
-Route::group(['prefix' => 'user'], function () {
-    Route::get('/',[UserController::class, 'index']);
+Route::group(['prefix' => 'user','middleware' => 'auth:sanctum'], function () {
+    Route::get('',[UserController::class, 'index']);
     Route::get('/{id}', [UserController::class, 'detail']);
     Route::put('/{id}', [UserController::class, 'update']);
     Route::put('/{id}/status', [UserController::class, 'toggleStatus']);
-    Route::post('/', [UserController::class, 'create']);
+    Route::post('', [UserController::class, 'create']);
+
+    Route::group(['prefix' => 'group'], function () {
+        Route::get('',[UserController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'menu'], function () {
+        Route::get('',[UserController::class, 'index']);
+    });
 });
+
+
+

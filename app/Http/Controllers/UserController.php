@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Services\UserService;
 use App\Traits\responseTrait;
 use Illuminate\Http\Request;
@@ -20,39 +22,39 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $response = $this->service->pagination($request);
-        return $this->response($response, 'List User successfully retrieved', 'User retrieved');
+        return $this->response($response);
     }
 
     public function detail($id)
     {
         $response = $this->service->getById($id);
-        return $this->response($response, 'User Detail successfully retrieved', 'User retrieved');
+        return $this->response($response);
     }
 
     public function update($id, UpdateRequest $request)
     {
         $response = $this->service->update($id, $request);
-        return $this->response($response, 'User successfully updated', 'User updated');
+        return $this->response($response);
     }
 
     public function create(CreateRequest $request)
     {
         $response = $this->service->create($request);
-        return $this->response($response, 'User successfully created', 'User created');
+        return $this->response($response);
     }
 
     public function delete($id)
     {
         $response = $this->service->delete($id);
-        return $this->response($response, 'User successfully deleted', 'User deleted');
+        return $this->response($response);
     }
 
     public function toggleStatus($id)
     {
         $response = $this->service->toggle($id);
         if ( $response->sts === true){
-            return $this->response($response, 'User successfully activate', 'User updated');
+            return $this->response($response);
         }
-        return $this->response($response, 'User successfully deactivate', 'User updated');
+        return $this->response($response);
     }
 }

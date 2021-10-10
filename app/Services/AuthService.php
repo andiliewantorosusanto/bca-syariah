@@ -6,6 +6,9 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 use App\Traits\paginatorTrait;
+use Illuminate\Support\Facades\Log;
+
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthService
 {
@@ -20,33 +23,61 @@ class AuthService
 
     public function login($request)
     {
-        $user = $this->userRepository->getByUsername($request->username);
-        $ldap = $this->ldapLogin($request);
 
-        if(!$user || !$ldap) {
-            return 'gagal login';
+        $user = $this->userRepository->getByUsername($request->username);
+        if(!$user) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'username'   => 'Username does not exists'
+            ]);
         }
 
+        $ldap = $this->ldapLogin($request);
+        if(!$ldap) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'password'   => 'Ldap login failed',
+            ]);
+        }
+
+        $token = $user->createToken(env('APP_TOKEN_KEY'))->plainTextToken;
+
         return [
-            'data' => ''
+            'token'     => $token,
+            'user'      => $user
         ];
     }
 
     public function ldapLogin($request)
     {
-        $encodedCredential = base64_encode($request->username.':'.$request->password);
+        $encodedCredential = base64_encode(env('LDAP_USERNAME').':'.env('LDAP_PASSWORD'));
         $client = new \GuzzleHttp\Client(
-            ['headers' =>
+            [
+                'headers' =>
                 [
                     'Authorization' => 'Basic '.$encodedCredential,
                     'Content-Type'  => 'application/json'
-                ]
+                ],
+                'body' =>
+                '
+                    {
+                    "TrxId" : "112",
+                    "Credentials" : {
+                      "UserId" : "'.$request->username.'",
+                      "UserName" : null,
+                      "Password" : "'.$request->password.'"
+                    }
+                  }
+                '
             ]
         );
 
-        $request = $client->request('POST', 'http://192.168.29.71:12103/EnterpriseAuthentication/AuthenticateUserV2');
+        $response = $client->request('POST', env('LDAP_URL'));
 
-        return $request;
+        $response = (json_decode($response->getBody()->getContents()));
 
+        if(empty($response->ResponseHeader) || $response->ResponseHeader->ErrorDescription === "Failed") {
+            return false;
+        } else {
+            return $response->UserInfo;
+        }
     }
 }

@@ -8,7 +8,7 @@ trait paginatorTrait
     /**
      * @return response
      */
-    public function convertPaginator($paginator)
+    public function convertPaginator($paginator,$varname = "data")
     {
         $data = $paginator->items();
 
@@ -22,7 +22,7 @@ trait paginatorTrait
         ];
 
         return [
-            'data'      => $data,
+            $varname    => $data,
             'meta'      => $meta
         ];
     }

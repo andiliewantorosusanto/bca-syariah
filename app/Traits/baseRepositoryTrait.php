@@ -85,7 +85,7 @@ trait baseRepositoryTrait
      */
     public function all()
     {
-        
+
         return $this->model->get();
     }
 
@@ -113,8 +113,9 @@ trait baseRepositoryTrait
         return $this->save($this->model, $input);
     }
 
-    public function create($input)
+    public function create($input,$user_id)
     {
+        $input['created_by'] = $input['updated_by'] = $user_id;
         return $this->model->create($input);
     }
 
@@ -158,7 +159,7 @@ trait baseRepositoryTrait
     */
     public function upsert(array $data,array $identifier,array $attribute) {
         return $this->model->upsert($data,$identifier,$attribute);
-    }   
+    }
 
     /**
      * Save the input's data.

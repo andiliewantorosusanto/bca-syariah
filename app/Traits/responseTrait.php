@@ -8,12 +8,11 @@ trait responseTrait
     /**
      * @return response
      */
-    public function response($data, $message="", $title="",$code = '200')
+    public function response($data, $message="",$code = '200')
     {
         $response = [
             'status'    => true,
             'data'      => $data,
-            'title'     => $title,
             'message'   => $message
         ];
 

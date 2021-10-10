@@ -3,7 +3,7 @@
 
 namespace App\Services;
 
-
+use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\paginatorTrait;
 
@@ -23,12 +23,13 @@ class UserService
         $limit = $request->input('limit','15');
         $query = $this->repository->init();
 
-        if ( isset($request->name)){
-            $query = $this->repository->filterName($query, $request->name);
+        if ( isset($request->sort) && $request->sort != "undefined"){
+            $query = $this->repository->orderBy($query, $request->sort, $request->order);
         }
 
         $result = $this->repository->pagination($query, $limit);
-        return $this->convertPaginator($result);
+
+        return $this->convertPaginator($result,'users');
     }
 
     public function getById($id)
@@ -43,7 +44,7 @@ class UserService
 
     public function create($request)
     {
-        return $this->repository->create($request->all());
+        return $this->repository->create($request->all(),$request->user()->id);
     }
 
     public function delete($id)

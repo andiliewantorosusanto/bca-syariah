@@ -28,13 +28,18 @@ class UserRepository
         return $query->paginate($limit);
     }
 
-    public function filterName($query, $name)
-    {
-        return $query->where('name', 'like' ,'%'.$name.'%');
-    }
-
     public function getByUsername($username)
     {
         return $this->model->where('username',$username)->first();
+    }
+
+    public function orderBy($query,$sort,$order)
+    {
+        if($order == 'desc')
+        {
+            return $query->orderByDesc($sort);
+        } else {
+            return $query->orderBy($sort);
+        }
     }
 }

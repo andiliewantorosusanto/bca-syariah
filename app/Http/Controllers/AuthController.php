@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Requests\Auth\LoginRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Services\AuthService;
+use App\Traits\responseTrait;
 
 class AuthController extends Controller
 {
@@ -13,35 +12,13 @@ class AuthController extends Controller
 
     protected $service;
 
-    public function __construct(UserService $service)
+    public function __construct(AuthService $service)
     {
         $this->service = $service;
     }
 
-    public function register(Request $request) {
-        $fields = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|unique:users,email',
-            'password' => 'required|string|confirmed'
-        ]);
-
-        $user = User::create([
-            'name'  => $fields['name'],
-            'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
-        ]);
-
-        $token = $user->createToken('myapptoken')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response($response,201);
-    }
-
     public function login(LoginRequest $request) {
-        $response =
+        $response = $this->service->login($request);
+        return $this->response($response);
     }
 }
