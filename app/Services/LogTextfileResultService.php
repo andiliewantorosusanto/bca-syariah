@@ -18,37 +18,36 @@ class LogTextfileResultService
         $this->repository = $repository;
     }
 
-    public function pagination($request)
+    public function browse($request)
     {
-        $limit      = $request->input('limit','15');
-        $query = $this->repository->init();
-
-        if ( isset($request->name)){
-            $query = $this->repository->filterName($query, $request->name);
-        }
-
-        $result = $this->repository->pagination($query, $limit);
-        return $this->convertPaginator($result);
+        return $this->repository->browse($request->search_column,$request->search_value,$request->sort);
     }
 
-    public function getById($id)
+    public function insertLogTextfileResult($batch_no,$file_path_textfile,$file_name_textfile,$file_path_excel,$file_name_excel,$user_id)
     {
-        return $this->repository->getById($id);
+        $log_textfile_result = array(
+            "batch_no"                  => $batch_no,
+            "file_path_textfile"        => $file_path_textfile,
+            "file_name_textfile"        => $file_name_textfile,
+            "file_path_excel"           => $file_path_excel,
+            "file_name_excel"           => $file_name_excel,
+            "created_by"                => $user_id,
+            "status_export"             => 0
+        );
+
+        return $this->repository->create($log_textfile_result,$user_id);
     }
 
-    public function update($id, $request)
+    public function getByBatchNo($batch_no,$status_export)
     {
-        return $this->repository->update($id, $request->all());
+        return $this->repository->getByBatchNo($batch_no,$status_export);
     }
 
-    public function create($request)
+    public function getNextBatchNo()
     {
-        return $this->repository->create($request->all());
-    }
+        $batch_no = count($this->repository->getAllBatch()) + 1;
+        $batch_no = str_pad($batch_no,10, "0", STR_PAD_LEFT);
 
-    public function delete($id)
-    {
-        $model = $this->repository->getById($id);
-        return $this->repository->destroy($model);
+        return $batch_no;
     }
 }

@@ -42,23 +42,86 @@ class Handler extends ExceptionHandler
         });
     }
 
-    protected function convertExceptionToResponse(Throwable $e)
+    public function render($request, Throwable $exception)
     {
-        $uuid = Str::uuid();
+        if ($request->wantsJson()) {   //add Accept: application/json in request
+            return $this->handleApiException($request, $exception);
+        } else {
+            $retval = parent::render($request, $exception);
+        }
 
-        Log::error([
-            'Id'    => $uuid,
-            'Error' => $e->getMessage(),
-            'Stack Trace' => $e->getTraceAsString()
-        ]);
+        return $retval;
+    }
 
-        $response = [
-            'status'    => false,
-            'error'     => new \stdClass(),
-            'message'   => "Something Went Wrong!. Report With This ID:".$uuid
-        ];
+    private function handleApiException($request, Throwable $exception)
+    {
+        $exception = $this->prepareException($exception);
 
-        return response()->json($response, 500);
+        if ($exception instanceof \Illuminate\Http\Exception\HttpResponseException) {
+            $exception = $exception->getResponse();
+        }
+
+        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+            $exception = $this->unauthenticated($request, $exception);
+        }
+
+        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            $exception = $this->convertValidationExceptionToResponse($exception, $request);
+        }
+
+        return $this->customApiResponse($exception);
+    }
+
+    private function customApiResponse($exception)
+    {
+        if (method_exists($exception, 'getStatusCode')) {
+            $statusCode = $exception->getStatusCode();
+        } else {
+            $statusCode = 500;
+        }
+
+        $response = [];
+
+        switch ($statusCode) {
+            case 401:
+                $response['message'] = 'Unauthorized';
+                break;
+            case 403:
+                $response['message'] = 'Forbidden';
+                break;
+            case 404:
+                $response['message'] = 'Not Found';
+                break;
+            case 405:
+                $response['message'] = 'Method Not Allowed';
+                break;
+            case 422:
+                $response['message'] = $exception->original['message'];
+                $response['errors'] = $exception->original['errors'];
+                break;
+            default:
+                $uuid = Str::uuid();
+
+                Log::error([
+                    'Id'    => $uuid,
+                    'Error' => $exception->getMessage(),
+                    'Stack Trace' => $exception->getTraceAsString()
+                ]);
+
+                $response['message'] = ($statusCode == 500) ? 'Whoops, looks like something went wrong! Error ID : '.$uuid.'Message : '.$exception->getMessage() : 'Error ID :'.$uuid.'Message : '.$exception->getMessage();
+                break;
+        }
+
+        if (config('app.debug')) {
+            if($statusCode == 500) {
+                $response['trace'] = $exception->getTrace();
+                $response['code'] = $exception->getCode();
+            }
+        }
+
+        $response['status'] = $statusCode;
+
+        return response()->json($response, $statusCode);
     }
 
     /**
@@ -78,7 +141,7 @@ class Handler extends ExceptionHandler
 
         $response = [
             'status'    => false,
-            'error'     => new \stdClass(),
+            'errors'     => new \stdClass(),
             'message'   => ""
         ];
 
@@ -86,7 +149,7 @@ class Handler extends ExceptionHandler
             if($key[0] === "&") {
                 $response[ltrim($key,"&")] = $fields[$key][0];
             } else {
-                $response['error']->$key = $fields[$key][0];
+                $response['errors']->$key = $fields[$key][0];
             }
         }
 

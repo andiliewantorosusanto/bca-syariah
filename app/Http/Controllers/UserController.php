@@ -43,6 +43,17 @@ class UserController extends Controller
         return $this->response($response);
     }
 
+    public function getGroup($id)
+    {
+        $response = $this->service->getGroup($id);
+        return $this->response($response);
+    }
+
+    public function updateGroups($id,Request $request) {
+        $response = $this->service->updateGroups($id,$request);
+        return $this->response($response);
+    }
+
     public function delete($id)
     {
         $response = $this->service->delete($id);

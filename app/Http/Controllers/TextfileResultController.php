@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TextfileResultService;
+use App\Traits\responseTrait;
 use Illuminate\Http\Request;
+
 
 class TextfileResultController extends Controller
 {
@@ -15,33 +18,9 @@ class TextfileResultController extends Controller
         $this->service = $service;
     }
 
-    public function index(Request $request)
+    public function import(Request $request)
     {
-        $response = $this->service->pagination($request);
-        return $this->response($response, 'List Generate Textfile successfully retrieved', 'Generate Textfile retrieved');
-    }
-
-    public function detail($id)
-    {
-        $response = $this->service->getById($id);
-        return $this->response($response, 'Generate Textfile Detail successfully retrieved', 'Generate Textfile retrieved');
-    }
-
-    public function update($id, UpdateRequest $request)
-    {
-        $response = $this->service->update($id, $request);
-        return $this->response($response, 'Generate Textfile successfully updated', 'Generate Textfile updated');
-    }
-
-    public function create(CreateRequest $request)
-    {
-        $response = $this->service->create($request);
-        return $this->response($response, 'Generate Textfile successfully created', 'Generate Textfile created');
-    }
-
-    public function delete($id)
-    {
-        $response = $this->service->delete($id);
-        return $this->response($response, 'Generate Textfile successfully deleted', 'Generate Textfile deleted');
+        $response = $this->service->import($request);
+        return $this->response($response);
     }
 }

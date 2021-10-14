@@ -43,7 +43,7 @@ class MenuTypeService
 
     public function create($request)
     {
-        return $this->repository->create($request->all());
+        return $this->repository->create($request->all(),$request->user()->id);
     }
 
     public function delete($id)

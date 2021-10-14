@@ -15,11 +15,12 @@ class CreateLogTextfileResultsTable extends Migration
     {
         Schema::create('log_textfile_results', function (Blueprint $table) {
             $table->id();
-            $table->string('file_path_text_file');
-            $table->string('file_name_text_file');
+            $table->string('file_path_textfile');
+            $table->string('file_name_textfile');
             $table->string('file_path_excel');
             $table->string('file_name_excel');
             $table->string('batch_no');
+            $table->integer('status_export');
             $table->timestamps();
         });
     }

@@ -42,4 +42,9 @@ class User extends Authenticatable
     protected $casts = [
 
     ];
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class);
+    }
 }

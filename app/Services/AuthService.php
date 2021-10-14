@@ -31,12 +31,12 @@ class AuthService
             ]);
         }
 
-        $ldap = $this->ldapLogin($request);
-        if(!$ldap) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
-                'password'   => 'Ldap login failed',
-            ]);
-        }
+        // $ldap = $this->ldapLogin($request);
+        // if(!$ldap) {
+        //     throw \Illuminate\Validation\ValidationException::withMessages([
+        //         'password'   => 'Ldap login failed',
+        //     ]);
+        // }
 
         $token = $user->createToken(env('APP_TOKEN_KEY'))->plainTextToken;
 

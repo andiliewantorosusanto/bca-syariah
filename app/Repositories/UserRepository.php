@@ -28,9 +28,19 @@ class UserRepository
         return $query->paginate($limit);
     }
 
+    public function getGroup($id)
+    {
+        return $this->model->where('id', $id)->first()->groups()->get();
+    }
+
     public function getByUsername($username)
     {
         return $this->model->where('username',$username)->first();
+    }
+
+    public function filter($query,$column,$keyword)
+    {
+        return $query->orWhere($column, 'LIKE' ,'%'.$keyword.'%');
     }
 
     public function orderBy($query,$sort,$order)

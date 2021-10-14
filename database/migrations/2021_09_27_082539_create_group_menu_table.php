@@ -15,10 +15,10 @@ class CreateGroupMenuTable extends Migration
     {
         Schema::create('group_menu', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_menu');
-            $table->unsignedBigInteger('id_group');
-            $table->foreign('id_menu')->references('id')->on('menus');
-            $table->foreign('id_group')->references('id')->on('groups');
+            $table->unsignedBigInteger('menu_id');
+            $table->unsignedBigInteger('group_id');
+            $table->foreign('menu_id')->references('id')->on('menus');
+            $table->foreign('group_id')->references('id')->on('groups');
             $table->timestamps();
         });
     }

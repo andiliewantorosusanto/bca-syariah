@@ -23,8 +23,13 @@ class LogExportTextfileRepository
         return $this->model;
     }
 
-    public function pagination($query, $limit)
+    public function getTodayExport()
     {
-        return $query->paginate($limit);
+        return $this->model->whereDate('created_at',date('Y-m-d'))->get();
+    }
+
+    public function getByBatchNo($batch_no)
+    {
+        return $this->model->where('batch_no',$batch_no)->first();
     }
 }

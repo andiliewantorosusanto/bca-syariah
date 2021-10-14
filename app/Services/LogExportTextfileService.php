@@ -18,37 +18,25 @@ class LogExportTextfileService
         $this->repository = $repository;
     }
 
-    public function pagination($request)
+    public function getTodayExportCount()
     {
-        $limit      = $request->input('limit','15');
-        $query = $this->repository->init();
-
-        if ( isset($request->name)){
-            $query = $this->repository->filterName($query, $request->name);
-        }
-
-        $result = $this->repository->pagination($query, $limit);
-        return $this->convertPaginator($result);
+        return count($this->repository->getTodayExport());
     }
 
-    public function getById($id)
+    public function insertLogExport($batch_no,$file_path,$file_name,$user_id)
     {
-        return $this->repository->getById($id);
+        $log_export_textfile = array(
+            "batch_no"                  => $batch_no,
+            "file_path"                 => $file_path,
+            "file_name"                 => $file_name,
+            'created_by'                => $user_id
+        );
+
+        return $this->repository->create($log_export_textfile,$user_id);
     }
 
-    public function update($id, $request)
+    public function getByBatchNo($batch_no)
     {
-        return $this->repository->update($id, $request->all());
-    }
-
-    public function create($request)
-    {
-        return $this->repository->create($request->all());
-    }
-
-    public function delete($id)
-    {
-        $model = $this->repository->getById($id);
-        return $this->repository->destroy($model);
+        return $this->repository->getByBatchNo($batch_no);
     }
 }

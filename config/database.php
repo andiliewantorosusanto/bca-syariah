@@ -35,6 +35,19 @@ return [
 
     'connections' => [
 
+        'csf' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_CSF', '192.168.29.38'),
+            'port' => env('DB_PORT_CSF', '1433'),
+            'database' => env('DB_DATABASE_CSF', 'CSF'),
+            'username' => env('DB_USERNAME_CSF', 'itdp4_andi'),
+            'password' => env('DB_PASSWORD_CSF', '123456'),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),

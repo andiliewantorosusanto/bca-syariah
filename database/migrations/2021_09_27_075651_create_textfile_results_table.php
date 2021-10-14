@@ -19,13 +19,17 @@ class CreateTextfileResultsTable extends Migration
             $table->string('nomor_rekening');
             $table->string('jenis_mutasi');
             $table->string('trx_code');
-            $table->decimal('amount',8,2);
+            $table->decimal('amount',25,2);
             $table->string('sign');
             $table->string('deskripsi');
             $table->string('status_va');
-            $table->string('ket_validasi');
-            $table->string('sts_proses');
+            $table->string('ket_validasi')->nullable(true);
+            $table->string('sts_proses')->nullable(true);
             $table->string('ket_proses');
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
             $table->timestamps();
         });
     }
