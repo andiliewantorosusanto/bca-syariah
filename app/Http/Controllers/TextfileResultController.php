@@ -23,4 +23,10 @@ class TextfileResultController extends Controller
         $response = $this->service->import($request);
         return $this->response($response);
     }
+
+    public function index(Request $request)
+    {
+        $response = $this->service->pagination($request);
+        return $this->response($response);
+    }
 }

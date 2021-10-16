@@ -20,7 +20,15 @@ class LogTextfileResultService
 
     public function browse($request)
     {
-        return $this->repository->browse($request->search_column,$request->search_value,$request->sort);
+        $result = [];
+        if($request->search_column == "updated_by")
+        {
+            $result = $this->repository->browseUpdatedBy($request->search_value,$request->sort);
+        } else {
+            $result = $this->repository->browse($request->search_column,$request->search_value,$request->sort);
+        }
+
+        return $result;
     }
 
     public function insertLogTextfileResult($batch_no,$file_path_textfile,$file_name_textfile,$file_path_excel,$file_name_excel,$user_id)
@@ -32,6 +40,7 @@ class LogTextfileResultService
             "file_path_excel"           => $file_path_excel,
             "file_name_excel"           => $file_name_excel,
             "created_by"                => $user_id,
+            "updated_by"                => $user_id,
             "status_export"             => 0
         );
 

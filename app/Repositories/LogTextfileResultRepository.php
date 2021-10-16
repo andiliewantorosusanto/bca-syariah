@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Models\LogTextfileResult;
 use App\Traits\baseRepositoryTrait;
+use Illuminate\Database\Eloquent\Builder;
 
 class LogTextfileResultRepository
 {
@@ -40,6 +41,13 @@ class LogTextfileResultRepository
 
     public function browse($search_column,$search_value,$sort)
     {
-        return $this->model->where($search_column,$search_value)->orderBy($sort)->withCount('textfileresults')->with('updatedby')->get();
+        return $this->model->where($search_column,'like','%'.$search_value.'%')->orderBy($sort)->withCount('textfileresults')->with('updatedby')->get();
+    }
+
+    public function browseUpdatedBy($search_value,$sort)
+    {
+        return $this->model->whereHas('updatedby',function (Builder $query) use ($search_value){
+            $query->where('nama','like','%'.$search_value.'%')->orWhere('username','like','%'.$search_value.'%');
+        })->orderBy($sort)->withCount('textfileresults')->with('updatedby')->get();
     }
 }

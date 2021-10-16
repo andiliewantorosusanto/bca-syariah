@@ -21,6 +21,10 @@ class CreateLogTextfileResultsTable extends Migration
             $table->string('file_name_excel');
             $table->string('batch_no');
             $table->integer('status_export');
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

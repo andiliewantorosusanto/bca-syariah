@@ -17,7 +17,9 @@ class LogTextfileResult extends Model
         'batch_no',
         'status_export',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'created_by',
+        'updated_by'
     ];
 
     public function textfileresults()

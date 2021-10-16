@@ -28,9 +28,19 @@ class TextfileResultRepository
         return $query->paginate($limit);
     }
 
-    public function getByBatchNo($batch_no,$ket_proses = 'sukses')
+    public function filterBatchNo($query, $batch_no)
+    {
+        return $query->where('batch_no',$batch_no);
+    }
+
+    public function getByBatchNoAndKetProses($batch_no,$ket_proses = 'sukses')
     {
         return $this->model->where('batch_no',$batch_no)->where('ket_proses','like',$ket_proses)->get();
+    }
+
+    public function getByBatchNo($batch_no)
+    {
+        return $this->model->where('batch_no',$batch_no)->get();
     }
 
     public function getCountByBatchNo($batch_no)

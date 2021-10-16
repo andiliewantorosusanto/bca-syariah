@@ -25,12 +25,25 @@ class TextfileResultService
         $this->logTextfileResultService= $logTextfileResultService;
     }
 
+    public function pagination($request)
+    {
+        $limit = $request->input('limit','1000');
+        $query = $this->repository->init();
+
+        if(isset($request->batch_no)) {
+            $query = $this->repository->filterBatchNo($query,$request->batch_no);
+        }
+
+        $result = $this->repository->pagination($query, $limit);
+        return $this->convertPaginator($result);
+    }
+
     public function import($request)
     {
         $batch_no = $this->logTextfileResultService->getNextBatchNo();
         $user_id = $request->user()->id;
         Excel::import(new TextfileResultImport($batch_no,$user_id), $request->file('file')->store('temp'));
-        $data = $this->repository->getByBatchNo($batch_no);
+        $data = $this->repository->getByBatchNoAndKetProses($batch_no);
         $text_file = $this->generateTextfile($data);
         $excel_file = $this->saveFile($request->file('file'));
         $result = $this->logTextfileResultService->insertLogTextfileResult($batch_no,$text_file['file_path_text_file'],$text_file['file_name_text_file'],$excel_file['file_path_excel'],$excel_file['file_name_excel'],$user_id);

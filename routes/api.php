@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\vrys_autodebetfuture_syariahController;
 use App\Http\Controllers\vrys_autodebetkonsumenbermasalah_syariahController;
 use App\Http\Controllers\vrys_autodebetnormal_syariahController;
+use App\Models\LogTextfileResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -64,6 +65,7 @@ Route::group(['prefix' => 'textfile' ,'middleware' => 'auth:sanctum'], function 
     Route::get('/downloadTextfile',[LogExportTextfileController::class,'downloadTextfile']);
 
     Route::group(['prefix' => 'upload'], function() {
+        Route::get('/',[TextfileResultController::class,'index']);
         Route::get('browse',[LogTextfileResultController::class,'browse']);
         Route::post('import',[TextfileResultController::class,'import']);
     });
