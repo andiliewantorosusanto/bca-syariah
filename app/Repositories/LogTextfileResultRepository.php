@@ -29,9 +29,15 @@ class LogTextfileResultRepository
         return $query->paginate($limit);
     }
 
-    public function getByBatchNo($batch_no,$export_status)
+    public function getByBatchNoAndExportStatus($batch_no,$export_status)
     {
-        return $this->model->where('batch_no',$batch_no)->where('export_status',$export_status)->first();
+        return $this->model->where('batch_no',$batch_no)->where('status_export',$export_status)->first();
+    }
+
+
+    public function getByBatchNo($batch_no)
+    {
+        return $this->model->where('batch_no',$batch_no)->first();
     }
 
     public function getAllBatch()

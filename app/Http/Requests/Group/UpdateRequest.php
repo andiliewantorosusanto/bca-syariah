@@ -24,8 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
-            'name' => 'required'
+            'group_name' => 'required|max:1000'
         ];
     }
 }

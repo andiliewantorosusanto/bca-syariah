@@ -47,4 +47,30 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class);
     }
+
+    public function menus()
+    {
+        $groups = $this->groups()->get();
+        $menu = collect();
+
+        foreach($groups as $group)
+        {
+            $menu = $menu->merge($group->menus()->get());
+        }
+
+        $menu = $menu->unique('id')->sortBy('menu_sort');
+
+        return $menu;
+    }
+
+    public function hasPermissionTo($permission)
+    {
+        $permission = Menu::where('menu_link',$permission)->first();
+
+        if($permission !== null) {
+            return true;
+        }
+
+        return false;
+    }
 }

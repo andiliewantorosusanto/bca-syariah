@@ -60,7 +60,9 @@ class UserService
 
     public function update($id, $request)
     {
-        return $this->repository->update($id, $request->all());
+        $input = $request->all();
+        $input['updated_by'] = $request->user()->id;
+        return $this->repository->update($id, $input);
     }
 
     public function create($request)

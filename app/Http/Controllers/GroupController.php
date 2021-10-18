@@ -48,4 +48,24 @@ class GroupController extends Controller
         $response = $this->service->delete($id);
         return $this->response($response);
     }
+
+    public function getMenu($id)
+    {
+        $response = $this->service->getMenu($id);
+        return $this->response($response);
+    }
+
+    public function updateMenu($id,Request $request) {
+        $response = $this->service->updateMenu($id,$request);
+        return $this->response($response);
+    }
+
+    public function toggleStatus($id)
+    {
+        $response = $this->service->toggle($id);
+        if ( $response->sts === true){
+            return $this->response($response);
+        }
+        return $this->response($response);
+    }
 }

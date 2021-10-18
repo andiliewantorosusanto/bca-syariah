@@ -31,6 +31,8 @@ class AuthService
             ]);
         }
 
+        $menu = $user->menus();
+
         // $ldap = $this->ldapLogin($request);
         // if(!$ldap) {
         //     throw \Illuminate\Validation\ValidationException::withMessages([
@@ -42,7 +44,8 @@ class AuthService
 
         return [
             'token'     => $token,
-            'user'      => $user
+            'user'      => $user,
+            'menu'      => $menu
         ];
     }
 

@@ -28,8 +28,8 @@ class GenerateTextfileService
     {
         $batch_no = $this->getNextBatchNo();
         $this->insertGenerateTextfile($data,$batch_no,$auto_debet_type,$user_id);
-        $file_name = $this->generateTextfile($batch_no,$auto_debet_type,$user_id);
-        $this->logExportTextfileService->insertLogExport($batch_no,$file_name,$file_name,$user_id);
+        $file = $this->generateTextfile($batch_no,$auto_debet_type,$user_id);
+        $this->logExportTextfileService->insertLogExport($batch_no,$file['file_path'],$file['file_name'],$user_id);
         return $batch_no;
     }
 
@@ -88,6 +88,9 @@ class GenerateTextfileService
             "updated_by" => $user_id
         );
 
+        $file_path = "create/textfile/";
+        $unique_name = uniqid().'.txt';
+
         $this->repository->updateGenerateTextFile($batch_no,'0',$auto_debet_type,$update_data);
         $generate_text_files = $this->repository->getGenerateTextFile($batch_no,'1',$auto_debet_type);
 
@@ -97,8 +100,11 @@ class GenerateTextfileService
             $text_file_content .= '4012,'.$e->account_no.','.round($e->installment,0).',+,'.$e->no_rek.$e->no_pin."\n";
         }
 
-        Storage::disk('local')->put($text_file_name, $text_file_content);
+        Storage::disk('local')->put($file_path.$unique_name, $text_file_content);
 
-        return $text_file_name;
+        return array(
+            "file_name"   => $text_file_name,
+            "file_path"   => $file_path.$unique_name
+        );
     }
 }

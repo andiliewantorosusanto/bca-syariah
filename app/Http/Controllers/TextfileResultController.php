@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TextfileResult\SearchRequest;
 use App\Services\TextfileResultService;
 use App\Traits\responseTrait;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class TextfileResultController extends Controller
         return $this->response($response);
     }
 
-    public function index(Request $request)
+    public function index(SearchRequest $request)
     {
         $response = $this->service->pagination($request);
         return $this->response($response);

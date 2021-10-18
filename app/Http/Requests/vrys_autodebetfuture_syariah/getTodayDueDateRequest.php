@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\vrys_autodebetfuture_syariah;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class getTodayDueDateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|alpha_num|max:50',
-            'nama'  => 'required|max:255'
+            'date' => 'required'
         ];
     }
 }

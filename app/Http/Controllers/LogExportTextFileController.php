@@ -21,6 +21,6 @@ class LogExportTextfileController extends Controller
     public function downloadTextfile(Request $request)
     {
         $log_export_textfile = $this->service->getByBatchNo($request->batch_no);
-        return Storage::disk('local')->download($log_export_textfile->file_name,$log_export_textfile->file_name,array('Access-Control-Expose-Headers' => "Content-Disposition"));
+        return Storage::disk('local')->download($log_export_textfile->file_path,$log_export_textfile->file_name,array('Access-Control-Expose-Headers' => "Content-Disposition"));
     }
 }

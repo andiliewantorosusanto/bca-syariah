@@ -19,6 +19,7 @@ class CreateMenusTable extends Migration
             $table->unsignedBigInteger('menu_type_id');
             $table->foreign('menu_type_id')->references('id')->on('menu_types');
             $table->string('menu_link');
+            $table->string('menu_icon');
             $table->integer('menu_sort');
             $table->timestamps();
         });

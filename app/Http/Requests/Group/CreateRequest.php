@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'group_name' => 'required|max:1000'
         ];
     }
 }

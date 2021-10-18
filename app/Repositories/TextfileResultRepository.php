@@ -35,7 +35,7 @@ class TextfileResultRepository
 
     public function getByBatchNoAndKetProses($batch_no,$ket_proses = 'sukses')
     {
-        return $this->model->where('batch_no',$batch_no)->where('ket_proses','like',$ket_proses)->get();
+        return $this->model->lock('WITH(NOLOCK)')->where('batch_no',$batch_no)->where('ket_proses','like',$ket_proses)->get();
     }
 
     public function getByBatchNo($batch_no)

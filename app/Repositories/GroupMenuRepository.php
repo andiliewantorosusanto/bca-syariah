@@ -23,8 +23,8 @@ class GroupMenuRepository
         return $this->model;
     }
 
-    public function pagination($query, $limit)
+    public function deleteByGroupId($group_id)
     {
-        return $query->paginate($limit);
+        return $this->model->where('group_id',$group_id)->delete();
     }
 }

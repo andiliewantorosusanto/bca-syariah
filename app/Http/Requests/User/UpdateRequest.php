@@ -24,7 +24,8 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'username' => 'required|alpha_num|max:50',
+            'nama'  => 'required|max:255'
         ];
     }
 }

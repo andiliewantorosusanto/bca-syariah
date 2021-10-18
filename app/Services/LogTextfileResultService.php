@@ -47,9 +47,21 @@ class LogTextfileResultService
         return $this->repository->create($log_textfile_result,$user_id);
     }
 
-    public function getByBatchNo($batch_no,$status_export)
+
+    public function updateStatusExporeByBatchNo($batch_no)
     {
-        return $this->repository->getByBatchNo($batch_no,$status_export);
+        $log = $this->repository->getByBatchNo($batch_no);
+        return $this->repository->update($log->id, ['status_export' => true]);
+    }
+
+    public function getByBatchNoAndStatusExport($batch_no,$status_export)
+    {
+        return $this->repository->getByBatchNoAndExportStatus($batch_no,$status_export);
+    }
+
+    public function getByBatchNo($batch_no)
+    {
+        return $this->repository->getByBatchNo($batch_no);
     }
 
     public function getNextBatchNo()

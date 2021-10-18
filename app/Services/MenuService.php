@@ -20,15 +20,25 @@ class MenuService
 
     public function pagination($request)
     {
-        $limit      = $request->input('limit','15');
+        $limit = $request->input('limit','15');
         $query = $this->repository->init();
 
-        if ( isset($request->name)){
-            $query = $this->repository->filterName($query, $request->name);
+        if ( isset($request->sort) && $request->sort != "undefined"){
+            $query = $this->repository->orderBy($query, $request->sort, $request->order);
+        }
+
+        if( isset($request->search) && $request->search != "") {
+            $menu = new Menu();
+            $columns = $menu->getFillable();
+
+            foreach($columns as $column){
+                $query = $this->repository->filter($query,$column,$request->search);
+            }
         }
 
         $result = $this->repository->pagination($query, $limit);
-        return $this->convertPaginator($result);
+
+        return $this->convertPaginator($result,'menus');
     }
 
     public function getById($id)

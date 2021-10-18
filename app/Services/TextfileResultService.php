@@ -60,11 +60,13 @@ class TextfileResultService
             $text_file_content .= $e->batch_no.','.$e->nomor_rekening.','.$e->jenis_mutasi.','.$e->trx_code.','.$e->amount.','.$e->sign.','.$e->deskripsi.','.$e->status_va.','.$e->ket_validasi.','.$e->sts_proses.','.$e->ket_proses;
         }
 
-        Storage::disk('local')->put($file_path_text_file.$file_name_text_file, $text_file_content);
+        $unique_name = uniqid().'.txt';
+
+        Storage::disk('local')->put($file_path_text_file.$unique_name, $text_file_content);
 
         return array(
             "file_name_text_file" => $file_name_text_file,
-            "file_path_text_file" => $file_path_text_file
+            "file_path_text_file" => $file_path_text_file.$unique_name
         );
     }
 
@@ -76,7 +78,7 @@ class TextfileResultService
 
         return array(
             "file_name_excel"   => $file_name_excel,
-            "file_path_excel"   => $file_path_excel
+            "file_path_excel"   => $file_path_excel.$file_name_excel
         );
     }
 }

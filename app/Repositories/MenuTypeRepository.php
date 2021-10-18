@@ -22,9 +22,4 @@ class MenuTypeRepository
     {
         return $this->model;
     }
-
-    public function pagination($query, $limit)
-    {
-        return $query->paginate($limit);
-    }
 }
