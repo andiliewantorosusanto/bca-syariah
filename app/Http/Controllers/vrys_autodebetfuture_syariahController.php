@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\vrys_autodebetfuture_syariah\generateTodayDueDateRequest;
 use App\Http\Requests\vrys_autodebetfuture_syariah\getTodayDueDateRequest;
+use App\Jobs\ImportViewFutureSyariah;
 use App\Services\vrys_autodebetfuture_syariahService;
 use App\Traits\responseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class vrys_autodebetfuture_syariahController extends Controller
 {
@@ -21,6 +23,13 @@ class vrys_autodebetfuture_syariahController extends Controller
         $this->service = $service;
     }
 
+    public function importAutoDebet(Request $request)
+    {
+        $response = $this->service->importAutoDebet($request);
+        return $this->response($response);
+    }
+
+
     public function getByDueDate(getTodayDueDateRequest $request)
     {
         $response = $this->service->getByDueDate($request);
@@ -32,5 +41,4 @@ class vrys_autodebetfuture_syariahController extends Controller
         $batch_no = $this->service->generateByDueDate($request);
         return $this->response($batch_no);
     }
-
 }

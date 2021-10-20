@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AutoDebetController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LogExportTextfileController;
 use App\Http\Controllers\LogTextfileResultController;
@@ -50,15 +51,18 @@ Route::group(['prefix' => 'user','middleware' => ['auth:sanctum','permission:/us
 Route::group(['prefix' => 'textfile' ,'middleware' => 'auth:sanctum'], function () {
     Route::group(['prefix' => 'create' ,'middleware' => 'permission:/textfile/create'], function () {
         Route::group(['prefix' => 'autodebetnormal'],function () {
-            Route::get('/',[vrys_autodebetnormal_syariahController::class,'getTodayDueDate']);
+            Route::get('/',[AutoDebetController::class,'getNormal']);
+            Route::get('/import',[vrys_autodebetnormal_syariahController::class,'importAutoDebet']);
             Route::post('/generate',[vrys_autodebetnormal_syariahController::class,'generateTodayDueDate']);
         });
         Route::group(['prefix' => 'autodebetkonsumenbermasalah'],function () {
-            Route::get('/',[vrys_autodebetkonsumenbermasalah_syariahController::class,'getTodayDueDate']);
+            Route::get('/',[AutoDebetController::class,'getKonsumenBermasalah']);
+            Route::get('/import',[vrys_autodebetkonsumenbermasalah_syariahController::class,'importAutoDebet']);
             Route::post('/generate',[vrys_autodebetkonsumenbermasalah_syariahController::class,'generateTodayDueDate']);
         });
         Route::group(['prefix' => 'autodebetfuture'],function () {
-            Route::get('/',[vrys_autodebetfuture_syariahController::class,'getByDueDate']);
+            Route::get('/',[AutoDebetController::class,'getFuture']);
+            Route::get('/import',[vrys_autodebetfuture_syariahController::class,'importAutoDebet']);
             Route::post('/generate',[vrys_autodebetfuture_syariahController::class,'generateByDueDate']);
         });
         Route::get('/downloadTextfile',[LogExportTextfileController::class,'downloadTextfile']);
