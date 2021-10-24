@@ -40,11 +40,11 @@ class TextfileResultRepository
 
     public function getByBatchNo($batch_no)
     {
-        return $this->model->where('batch_no',$batch_no)->get();
+        return $this->model->lock('WITH(NOLOCK)')->where('batch_no',$batch_no)->get();
     }
 
     public function getCountByBatchNo($batch_no)
     {
-        return $this->model->where('batch_no',$batch_no)->count();
+        return $this->model->lock('WITH(NOLOCK)')->where('batch_no',$batch_no)->count();
     }
 }

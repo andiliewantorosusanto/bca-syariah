@@ -37,6 +37,7 @@ class CreateAutoDebetsTable extends Migration
             $table->string('bank');
             $table->boolean('sts');
             $table->string('auto_debet_type');
+            $table->string('token');
             $table->timestamps();
         });
     }

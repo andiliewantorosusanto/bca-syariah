@@ -30,12 +30,12 @@ class UserRepository
 
     public function getGroup($id)
     {
-        return $this->model->where('id', $id)->first()->groups()->get();
+        return $this->model->lock('WITH(NOLOCK)')->where('id', $id)->first()->groups()->get();
     }
 
     public function getByUsername($username)
     {
-        return $this->model->where('username',$username)->first();
+        return $this->model->lock('WITH(NOLOCK)')->where('username',$username)->first();
     }
 
     public function filter($query,$column,$keyword)

@@ -38,7 +38,7 @@ class vrys_autodebetfuture_syariahController extends Controller
 
     public function  generateByDueDate(generateTodayDueDateRequest $request)
     {
-        $batch_no = $this->service->generateByDueDate($request);
-        return $this->response($batch_no);
+        $response = $this->service->generateByDueDate($request);
+        return $this->response($response);
     }
 }

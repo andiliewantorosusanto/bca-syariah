@@ -25,11 +25,11 @@ class LogExportTextfileRepository
 
     public function getTodayExport()
     {
-        return $this->model->whereDate('created_at',date('Y-m-d'))->get();
+        return $this->model->lock('WITH(NOLOCK)')->whereDate('created_at',date('Y-m-d'))->count();
     }
 
     public function getByBatchNo($batch_no)
     {
-        return $this->model->where('batch_no',$batch_no)->first();
+        return $this->model->lock('WITH(NOLOCK)')->where('batch_no',$batch_no)->first();
     }
 }

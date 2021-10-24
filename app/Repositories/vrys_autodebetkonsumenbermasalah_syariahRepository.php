@@ -27,7 +27,7 @@ class vrys_autodebetkonsumenbermasalah_syariahRepository
     {
         //2021-05-11
         //return $this->model->whereDate('tgljatuhtempo',date('Y-m-d'))->get();
-        return $this->model->whereDate('tgljatuhtempo','2021-05-11')->get();
+        return $this->model->select(DB::raw('count(*) as totalData'),DB::raw('SUM(installment) as totalAmount'))->first();
     }
 
     public function import()

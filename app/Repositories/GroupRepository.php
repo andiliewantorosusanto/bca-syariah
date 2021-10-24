@@ -30,7 +30,7 @@ class GroupRepository
 
     public function getMenu($id)
     {
-        return $this->model->where('id', $id)->first()->menus()->get();
+        return $this->model->lock('WITH(NOLOCK)')->where('id', $id)->first()->menus()->get();
     }
 
     public function filter($query,$column,$keyword)

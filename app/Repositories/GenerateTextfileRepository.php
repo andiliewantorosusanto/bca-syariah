@@ -30,7 +30,7 @@ class GenerateTextfileRepository
 
     public function getAllBatch()
     {
-        return $this->model->select('batch_no')->orderByDesc('batch_no')->groupBy('batch_no')->get();
+        return $this->model->lock('WITH(NOLOCK)')->select('batch_no')->orderByDesc('batch_no')->groupBy('batch_no')->get();
     }
 
     public function updateGenerateTextFile($batch_no,$sts,$auto_debet_type,$update_data)

@@ -35,10 +35,10 @@ class vrys_autodebetnormal_syariahService
 
         while($loop != 0)
         {
-            $data = $this->repository->checkJobs($unique);
-            if($data) {
+            $done = $this->repository->checkJobs($unique);
+            if($done) {
                 return [
-                    'data' => true,
+                    'data' => $unique,
                     'message' => 'import berhasil'
                 ];
             }
@@ -55,19 +55,12 @@ class vrys_autodebetnormal_syariahService
     public function getTodayDueDate()
     {
         $data = $this->repository->getTodayDueDate();
-        $totalData = count($data);
-        $totalAmount = $data->sum('installment');
-
-        return [
-            'totalData' => $totalData,
-            'totalAmount' => $totalAmount,
-            'data' => $data
-        ];
+        return $data;
     }
 
     public function generateTodayDueDate($request)
     {
-        $data = $this->autoDebetRepository->getNormal();
+        $data = $this->autoDebetRepository->getNormal($request->token);
         $file_name = $this->generateTextfileService->createTextfile($data,'normal',$request->user()->id);
         return $file_name;
     }

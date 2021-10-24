@@ -20,7 +20,7 @@ class LogExportTextfileService
 
     public function getTodayExportCount()
     {
-        return count($this->repository->getTodayExport());
+        return $this->repository->getTodayExport();
     }
 
     public function insertLogExport($batch_no,$file_path,$file_name,$user_id)

@@ -52,43 +52,4 @@ class AutoDebetService
             $this->repository->firstOrCreate($auto_debet);
         }
     }
-
-    public function getFuture($request)
-    {
-        $data = $this->repository->getFuture($request->date);
-        $totalData = count($data);
-        $totalAmount = $data->sum('installment');
-
-        return [
-            'totalData' => $totalData,
-            'totalAmount' => $totalAmount,
-            'data' => $data
-        ];
-    }
-
-    public function getKonsumenBermasalah()
-    {
-        $data = $this->repository->getKonsumenBermasalah();
-        $totalData = count($data);
-        $totalAmount = $data->sum('installment');
-
-        return [
-            'totalData' => $totalData,
-            'totalAmount' => $totalAmount,
-            'data' => $data
-        ];
-    }
-
-    public function getNormal()
-    {
-        $data = $this->repository->getNormal();
-        $totalData = count($data);
-        $totalAmount = $data->sum('installment');
-
-        return [
-            'totalData' => $totalData,
-            'totalAmount' => $totalAmount,
-            'data' => $data
-        ];
-    }
 }

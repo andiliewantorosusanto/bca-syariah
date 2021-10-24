@@ -28,7 +28,7 @@ class vrys_autodebetfuture_syariahRepository
     {
         //uncomment this later
         //return $this->model->whereBetween('tgljatuhtempo',[date('Y-m-d'),$duedate])->get();
-        return $this->model->whereBetween('tgljatuhtempo',['2020-06-21',date('Y-m-d')])->get();
+        return $this->model->select(DB::raw('count(*) as totalData'),DB::raw('SUM(installment) as totalAmount'))->whereBetween('tgljatuhtempo',['2020-06-21',date('Y-m-d')])->first();
     }
 
     public function import($duedate)

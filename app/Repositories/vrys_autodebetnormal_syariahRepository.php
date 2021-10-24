@@ -27,7 +27,7 @@ class vrys_autodebetnormal_syariahRepository
     {
         //uncoment this later
         //return $this->model->whereDate('tgljatuhtempo',date('Y-m-d'))->get();
-        return $this->model->whereDate('tgljatuhtempo','2020-05-28')->get();
+        return $this->model->select(DB::raw('count(*) as totalData'),DB::raw('SUM(installment) as totalAmount'))->whereDate('tgljatuhtempo','2020-10-08')->first();
     }
 
     public function import()

@@ -31,28 +31,28 @@ class LogTextfileResultRepository
 
     public function getByBatchNoAndExportStatus($batch_no,$export_status)
     {
-        return $this->model->where('batch_no',$batch_no)->where('status_export',$export_status)->first();
+        return $this->model->lock('WITH(NOLOCK)')->where('batch_no',$batch_no)->where('status_export',$export_status)->first();
     }
 
 
     public function getByBatchNo($batch_no)
     {
-        return $this->model->where('batch_no',$batch_no)->first();
+        return $this->model->lock('WITH(NOLOCK)')->where('batch_no',$batch_no)->first();
     }
 
     public function getAllBatch()
     {
-        return $this->model->select('batch_no')->orderByDesc('batch_no')->groupBy('batch_no')->get();
+        return $this->model->lock('WITH(NOLOCK)')->select('batch_no')->orderByDesc('batch_no')->groupBy('batch_no')->get();
     }
 
     public function browse($search_column,$search_value,$sort)
     {
-        return $this->model->where($search_column,'like','%'.$search_value.'%')->orderBy($sort)->withCount('textfileresults')->with('updatedby')->get();
+        return $this->model->lock('WITH(NOLOCK)')->where($search_column,'like','%'.$search_value.'%')->orderBy($sort)->withCount('textfileresults')->with('updatedby')->get();
     }
 
     public function browseUpdatedBy($search_value,$sort)
     {
-        return $this->model->whereHas('updatedby',function (Builder $query) use ($search_value){
+        return $this->model->lock('WITH(NOLOCK)')->whereHas('updatedby',function (Builder $query) use ($search_value){
             $query->where('nama','like','%'.$search_value.'%')->orWhere('username','like','%'.$search_value.'%');
         })->orderBy($sort)->withCount('textfileresults')->with('updatedby')->get();
     }
