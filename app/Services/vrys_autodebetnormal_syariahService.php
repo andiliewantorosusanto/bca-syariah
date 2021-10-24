@@ -48,7 +48,7 @@ class vrys_autodebetnormal_syariahService
 
         return [
             'data' => false,
-            'message' => 'import belum selesai setelah '.$time.' detik'
+            'message' => 'import belum selesai setelah '.$time.' detik. Mohon Kontak Administrator dengan kode : '. $unique
         ];
     }
 
