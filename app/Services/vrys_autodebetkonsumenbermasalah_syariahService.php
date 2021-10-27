@@ -31,8 +31,8 @@ class vrys_autodebetkonsumenbermasalah_syariahService
     public function importAutoDebet($request)
     {
         $unique = $this->repository->import();
-        $delay = 5;
-        $loop = 12;
+        $delay = env('DB_DELAY');
+        $loop = env('DB_LOOP');
         $time = $delay * $loop;
 
         while($loop != 0)
