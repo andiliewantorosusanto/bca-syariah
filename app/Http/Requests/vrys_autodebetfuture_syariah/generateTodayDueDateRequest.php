@@ -24,7 +24,7 @@ class generateTodayDueDateRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'date' => 'required'
         ];
     }
 }
