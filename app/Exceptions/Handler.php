@@ -6,6 +6,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Throwable;
 
 class Handler extends ExceptionHandler

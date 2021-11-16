@@ -54,10 +54,22 @@ class TextfileResultService
     {
         $file_name_text_file = "BCAS_".date('Ymd').'.txt';
         $file_path_text_file = "upload/textfile/";
-        $text_file_content = "";
 
+        $prefixCode = "0CO";
+        $rekeningDebit = "2050070070";
+        $totalDebit = "080,917,554,200.00";
+        $someKode = "17299"; //change this on known
+        $jenisDebet = "AUTODEBET(23-1)";//no Idea
+        $tanggal = date('d/m/Y');
+        $tanggalHeader = date('Ymd');
+
+        $text_file_content = $prefixCode.$tanggalHeader.$rekeningDebit." ".$totalDebit.$someKode.$jenisDebet." ".$tanggal;
+
+        $namaTemp = "APWIND MAHENDRA"; //temp
         foreach($data as $e){
-            $text_file_content .= $e->batch_no.','.$e->nomor_rekening.','.$e->jenis_mutasi.','.$e->trx_code.','.$e->amount.','.$e->sign.','.$e->deskripsi.','.$e->status_va.','.$e->ket_validasi.','.$e->sts_proses.','.$e->ket_proses;
+            if($e->ket_proses == "SUKSES") {
+                $text_file_content .= $e->nomor_rekening.' '.$e->amount.$namaTemp.' '.'AUTODEBET'.' '.$e->deskripsi.' '.$namaTemp;
+            }
         }
 
         $unique_name = uniqid().'.txt';
