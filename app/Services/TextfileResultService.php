@@ -63,12 +63,12 @@ class TextfileResultService
         $tanggal = date('d/m/Y');
         $tanggalHeader = date('Ymd');
 
-        $text_file_content = $prefixCode.$tanggalHeader.$rekeningDebit." ".$totalDebit.$someKode.$jenisDebet." ".$tanggal;
+        $text_file_content = $prefixCode.$tanggalHeader.$rekeningDebit." ".$totalDebit.$someKode.$jenisDebet." ".$tanggal."\n";
 
         $namaTemp = "APWIND MAHENDRA"; //temp
         foreach($data as $e){
             if($e->ket_proses == "SUKSES") {
-                $text_file_content .= $e->nomor_rekening.' '.$e->amount.$namaTemp.' '.'AUTODEBET'.' '.$e->deskripsi.' '.$namaTemp;
+                $text_file_content .= $e->nomor_rekening.' '.$e->amount.$namaTemp.' '.'AUTODEBET'.' '.$e->deskripsi.' '.$namaTemp."\n";
             }
         }
 
