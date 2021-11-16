@@ -57,20 +57,24 @@ class TextfileResultService
 
         $prefixCode = "0CO";
         $rekeningDebit = "2050070070";
-        $totalDebit = "080,917,554,200.00";
+        $totalDebit = 0;
         $someKode = "17299"; //change this on known
         $jenisDebet = "AUTODEBET(23-1)";//no Idea
         $tanggal = date('d/m/Y');
         $tanggalHeader = date('Ymd');
-
-        $text_file_content = $prefixCode.$tanggalHeader.$rekeningDebit." ".$totalDebit.$someKode.$jenisDebet." ".$tanggal."\n";
-
+        $text_file_content = "";
         $namaTemp = "APWIND MAHENDRA"; //temp
+
+        $body = "";
         foreach($data as $e){
             if($e->ket_proses == "SUKSES") {
-                $text_file_content .= $e->nomor_rekening.' '.$e->amount.$namaTemp.' '.'AUTODEBET'.' '.$e->deskripsi.' '.$namaTemp."\n";
+                $totalDebit += (float) $e->amount;
+                $body .= $e->nomor_rekening.' '.$e->amount.$namaTemp.' '.'AUTODEBET'.' '.$e->deskripsi.' '.$namaTemp."\n";
             }
         }
+        $header = $prefixCode.$tanggalHeader.$rekeningDebit." ".$totalDebit.$someKode.$jenisDebet." ".$tanggal."\n";
+
+        $text_file_content = $header.$body;
 
         $unique_name = uniqid().'.txt';
 
