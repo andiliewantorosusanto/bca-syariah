@@ -31,8 +31,8 @@ class vrys_autodebetfuture_syariahService
     public function importAutoDebet($request)
     {
         $unique = $this->repository->import($request['date']);
-        $delay = 5;
-        $loop = 12;
+        $delay = env('DB_DELAY');
+        $loop = env('DB_LOOP');
         $time = $delay * $loop;
 
         while($loop != 0)
