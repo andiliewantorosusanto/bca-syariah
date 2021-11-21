@@ -5,6 +5,8 @@ namespace App\Services;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\TextfileResultImport;
+use App\Repositories\CorAccountInfoRepository;
+use App\Repositories\CorAccountRepository;
 use App\Repositories\TextfileResultRepository;
 use App\Traits\paginatorTrait;
 use GrahamCampbell\ResultType\Result;
@@ -14,15 +16,19 @@ class TextfileResultService
 {
     use paginatorTrait;
 
-    protected $repository,$logTextfileResultService;
+    protected $repository,$logTextfileResultService,$corAccountRepository,$corAccountInfoRepository;
 
     public function __construct(
         TextfileResultRepository $repository,
-        LogTextfileResultService $logTextfileResultService
+        LogTextfileResultService $logTextfileResultService,
+        CorAccountRepository $corAccountRepository,
+        CorAccountInfoRepository $corAccountInfoRepository
     )
     {
         $this->repository = $repository;
         $this->logTextfileResultService= $logTextfileResultService;
+        $this->corAccountRepository = $corAccountRepository;
+        $this->corAccountInfoRepository = $corAccountInfoRepository;
     }
 
     public function pagination($request)
@@ -58,21 +64,21 @@ class TextfileResultService
         $prefixCode = "0CO";
         $rekeningDebit = "2050070070";
         $totalDebit = 0;
-        $someKode = "17299"; //change this on known
-        $jenisDebet = "AUTODEBET(23-1)";//no Idea
+        $totalTransaction = 0;
+        $deskripsi = "AUTODEBET(NONBCA)";
         $tanggal = date('d/m/Y');
         $tanggalHeader = date('Ymd');
         $text_file_content = "";
-        $namaTemp = "APWIND MAHENDRA"; //temp
 
         $body = "";
         foreach($data as $e){
             if($e->ket_proses == "SUKSES") {
                 $totalDebit += (float) $e->amount;
-                $body .= $e->nomor_rekening.' '.$e->amount.$namaTemp.' '.'AUTODEBET'.' '.$e->deskripsi.' '.$namaTemp."\n";
+                $totalTransaction += 1;
+                $body .= str_pad('1'.$e->nomor_rekening,20).str_pad(number_format($e->amount, 2, ".", ","),35,' ',STR_PAD_LEFT).str_pad($e->corAccountInfo?->AtasNama,35).str_pad('AUTODEBET',18).str_pad($e->deskripsi,18).$e->corAccount?->AccountName."\r\n";
             }
         }
-        $header = $prefixCode.$tanggalHeader.$rekeningDebit." ".$totalDebit.$someKode.$jenisDebet." ".$tanggal."\n";
+        $header = str_pad($prefixCode.$tanggalHeader.$rekeningDebit,30).str_pad(number_format($totalDebit, 2, ".", ","),35," ",STR_PAD_LEFT).str_pad($totalTransaction,5,"0",STR_PAD_LEFT).str_pad($deskripsi."   ".$tanggal,143)."P-Accepted"."\r\n";
 
         $text_file_content = $header.$body;
 

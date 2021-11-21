@@ -97,7 +97,7 @@ class GenerateTextfileService
         $text_file_content = "";
 
         foreach($generate_text_files as $e){
-            $text_file_content .= '4012,'.$e->account_no.','.round($e->installment,0).',+,'.$e->no_rek.$e->no_pin."\n";
+            $text_file_content .= '4012,'.$e->account_no.','.round($e->installment,0).',-,'.$e->no_rek.'-'.$e->no_pin."\n";
         }
 
         Storage::disk('local')->put($file_path.$unique_name, $text_file_content);
